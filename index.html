@@ -1,0 +1,1632 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vértice Data — Operaciones · Tecnología · Negocio</title>
+  <meta name="description"
+    content="Ayudamos a distribuidoras a dejar de perder margen por no usar sus propios datos. Conectamos tus operaciones comerciales de punta a punta." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --navy: #08112b;
+      --navy-mid: #0d1b3e;
+      --navy-card: #111f45;
+      --blue: #2563eb;
+      --blue-lt: #3b82f6;
+      --teal: #0ea5e9;
+      --emerald: #10b981;
+      --amber: #f59e0b;
+      --white: #f8fafc;
+      --muted: #94a3b8;
+      --border: rgba(255, 255, 255, 0.08);
+      --radius: 12px;
+      --radius-lg: 20px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--navy);
+      color: var(--white);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── UTILITIES ── */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(37, 99, 235, 0.15);
+      border: 1px solid rgba(37, 99, 235, 0.4);
+      color: var(--blue-lt);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 999px;
+    }
+
+    .tag::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--blue-lt);
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(8, 17, 43, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+    }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--white);
+    }
+
+    .logo-mark {
+      width: 34px;
+      height: 34px;
+      background: linear-gradient(135deg, var(--blue) 0%, var(--teal) 100%);
+      clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+    }
+
+    .logo-text {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -.01em;
+    }
+
+    .logo-text span {
+      color: var(--blue-lt);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 14px;
+      transition: color .2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--white);
+    }
+
+    .btn-nav {
+      background: var(--blue);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 9px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background .2s, transform .15s;
+    }
+
+    .btn-nav:hover {
+      background: var(--blue-lt);
+      transform: translateY(-1px);
+    }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 24px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-glow {
+      position: absolute;
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 900px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at center, rgba(37, 99, 235, 0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .hero-tag {
+      margin-bottom: 20px;
+    }
+
+    .hero-h1 {
+      font-size: clamp(32px, 4.5vw, 54px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -.03em;
+      margin-bottom: 20px;
+    }
+
+    .hero-h1 .highlight {
+      background: linear-gradient(90deg, var(--blue-lt), var(--teal));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 18px;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 36px;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: var(--blue);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 14px 28px;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: background .2s, transform .15s, box-shadow .2s;
+      box-shadow: 0 4px 24px rgba(37, 99, 235, 0.35);
+    }
+
+    .btn-primary:hover {
+      background: var(--blue-lt);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(37, 99, 235, 0.45);
+    }
+
+    .btn-secondary {
+      display: inline-block;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: var(--white);
+      font-size: 16px;
+      font-weight: 500;
+      padding: 14px 28px;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: border-color .2s, background .2s;
+    }
+
+    .btn-secondary:hover {
+      border-color: rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    /* hero visual */
+    .hero-visual {
+      background: var(--navy-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      position: relative;
+    }
+
+    .hero-visual::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.4), rgba(14, 165, 233, 0.1), transparent);
+      z-index: -1;
+    }
+
+    .metric-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .metric {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+
+    .metric-value {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      margin-bottom: 4px;
+    }
+
+    .metric-label {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .metric-value.blue {
+      color: var(--blue-lt);
+    }
+
+    .metric-value.teal {
+      color: var(--teal);
+    }
+
+    .metric-value.emerald {
+      color: var(--emerald);
+    }
+
+    .metric-value.amber {
+      color: var(--amber);
+    }
+
+    .hero-statement {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      font-size: 13px;
+      color: rgba(16, 185, 129, 0.9);
+      line-height: 1.5;
+    }
+
+    .hero-statement strong {
+      color: var(--emerald);
+    }
+
+    /* ── PAIN ── */
+    #pain {
+      padding: 100px 24px;
+      background: #060d20;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .section-header .tag {
+      margin-bottom: 16px;
+    }
+
+    .section-h2 {
+      font-size: clamp(28px, 3.5vw, 44px);
+      font-weight: 800;
+      letter-spacing: -.02em;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+
+    .section-sub {
+      font-size: 17px;
+      color: var(--muted);
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .pain-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .pain-card {
+      background: var(--navy-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      transition: transform .2s, border-color .2s;
+    }
+
+    .pain-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(37, 99, 235, 0.3);
+    }
+
+    .pain-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin-bottom: 16px;
+    }
+
+    .pain-icon.red {
+      background: rgba(239, 68, 68, 0.15);
+    }
+
+    .pain-icon.orange {
+      background: rgba(249, 115, 22, 0.15);
+    }
+
+    .pain-icon.yellow {
+      background: rgba(234, 179, 8, 0.15);
+    }
+
+    .pain-icon.purple {
+      background: rgba(168, 85, 247, 0.15);
+    }
+
+    .pain-icon.pink {
+      background: rgba(236, 72, 153, 0.15);
+    }
+
+    .pain-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--white);
+    }
+
+    .pain-title em {
+      font-style: italic;
+      color: var(--muted);
+    }
+
+    .pain-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .pain-footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--white);
+    }
+
+    .pain-footer span {
+      color: var(--blue-lt);
+    }
+
+    /* ── METHOD ── */
+    #method {
+      padding: 100px 24px;
+    }
+
+    .method-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .method-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .step {
+      display: flex;
+      gap: 20px;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+
+    .step:last-child {
+      border-bottom: none;
+    }
+
+    .step-num {
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -.01em;
+    }
+
+    .step-num.s1 {
+      background: rgba(37, 99, 235, 0.2);
+      color: var(--blue-lt);
+      border: 1px solid rgba(37, 99, 235, 0.4);
+    }
+
+    .step-num.s2 {
+      background: rgba(14, 165, 233, 0.2);
+      color: var(--teal);
+      border: 1px solid rgba(14, 165, 233, 0.4);
+    }
+
+    .step-num.s3 {
+      background: rgba(16, 185, 129, 0.2);
+      color: var(--emerald);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+
+    .step-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .step-label.s1 {
+      color: var(--blue-lt);
+    }
+
+    .step-label.s2 {
+      color: var(--teal);
+    }
+
+    .step-label.s3 {
+      color: var(--emerald);
+    }
+
+    .step-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .step-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .services-panel {
+      background: var(--navy-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .services-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .service-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      padding: 14px 24px;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+      align-items: start;
+      transition: background .15s;
+    }
+
+    .service-row:last-child {
+      border-bottom: none;
+    }
+
+    .service-row:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .service-problem {
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .service-solution {
+      color: var(--white);
+      font-weight: 500;
+      line-height: 1.45;
+    }
+
+    /* ── CASES ── */
+    #cases {
+      padding: 100px 24px;
+      background: #060d20;
+    }
+
+    .cases-grid {
+      display: grid;
+      gap: 40px;
+    }
+
+    .case-card {
+      background: var(--navy-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: border-color .2s;
+    }
+
+    .case-card:hover {
+      border-color: rgba(37, 99, 235, 0.35);
+    }
+
+    .case-header {
+      padding: 32px 36px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .case-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+    }
+
+    .case-tag.pim {
+      background: rgba(37, 99, 235, 0.15);
+      color: var(--blue-lt);
+      border: 1px solid rgba(37, 99, 235, 0.3);
+    }
+
+    .case-tag.freshdesk {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--emerald);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .case-title {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -.01em;
+      margin-bottom: 8px;
+    }
+
+    .case-sub {
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 480px;
+    }
+
+    .case-badge {
+      min-width: 100px;
+      text-align: right;
+      white-space: nowrap;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .case-body {
+      padding: 32px 36px;
+    }
+
+    .case-two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .case-block-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .case-text {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .case-text p {
+      margin-bottom: 12px;
+    }
+
+    .case-text p:last-child {
+      margin-bottom: 0;
+    }
+
+    .impact-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 0;
+    }
+
+    .impact-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      background: rgba(16, 185, 129, 0.06);
+      border: 1px solid rgba(16, 185, 129, 0.15);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--white);
+    }
+
+    .impact-icon {
+      color: var(--emerald);
+      font-size: 16px;
+      margin-top: 1px;
+      min-width: 18px;
+    }
+
+    .diagram-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-top: 24px;
+    }
+
+    .diagram-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    /* mermaid diagram forced dark */
+    .mermaid {
+      text-align: center;
+    }
+
+    .screenshots-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .screenshot {
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #000;
+      aspect-ratio: 16/10;
+      object-fit: cover;
+      width: 100%;
+      transition: transform .2s, border-color .2s;
+    }
+
+    .screenshot:hover {
+      transform: scale(1.02);
+      border-color: rgba(37, 99, 235, 0.4);
+    }
+
+    .screenshot-single {
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #000;
+      max-height: 260px;
+      object-fit: cover;
+      width: 100%;
+      transition: transform .2s, border-color .2s;
+    }
+
+    .screenshot-single:hover {
+      transform: scale(1.01);
+      border-color: rgba(16, 185, 129, 0.4);
+    }
+
+    /* ── CTA ── */
+    #cta {
+      padding: 100px 24px;
+    }
+
+    .cta-box {
+      max-width: 860px;
+      margin: 0 auto;
+      background: linear-gradient(135deg, var(--navy-mid), var(--navy-card));
+      border: 1px solid rgba(37, 99, 235, 0.3);
+      border-radius: 24px;
+      padding: 64px;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .cta-glow {
+      position: absolute;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at center, rgba(37, 99, 235, 0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-h2 {
+      font-size: clamp(26px, 3.5vw, 42px);
+      font-weight: 800;
+      letter-spacing: -.02em;
+      margin-bottom: 16px;
+    }
+
+    .cta-sub {
+      font-size: 17px;
+      color: var(--muted);
+      margin-bottom: 36px;
+    }
+
+    .cta-checklist {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px 24px;
+      list-style: none;
+      margin-bottom: 40px;
+    }
+
+    .cta-checklist li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .cta-checklist li::before {
+      content: '✓';
+      color: var(--emerald);
+      font-weight: 700;
+    }
+
+    .cta-form-wrap {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 36px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .form-input {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      padding: 11px 14px;
+      color: var(--white);
+      font-size: 14px;
+      font-family: inherit;
+      transition: border-color .2s, background .2s;
+      outline: none;
+    }
+
+    .form-input:focus {
+      border-color: var(--blue);
+      background: rgba(37, 99, 235, 0.08);
+    }
+
+    .form-input::placeholder {
+      color: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-submit {
+      grid-column: 1 / -1;
+      background: var(--blue);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      padding: 15px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background .2s, transform .15s, box-shadow .2s;
+      box-shadow: 0 4px 24px rgba(37, 99, 235, 0.3);
+    }
+
+    .btn-submit:hover {
+      background: var(--blue-lt);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(37, 99, 235, 0.45);
+    }
+
+    .form-note {
+      grid-column: 1 / -1;
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ── ABOUT ── */
+    #about {
+      padding: 100px 24px;
+      background: #060d20;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .about-h2 {
+      font-size: clamp(26px, 3vw, 38px);
+      font-weight: 800;
+      letter-spacing: -.02em;
+      margin-bottom: 16px;
+    }
+
+    .about-sub {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+
+    .about-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .pill {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--white);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 999px;
+    }
+
+    .value-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .value-item {
+      display: flex;
+      gap: 16px;
+    }
+
+    .value-dot {
+      width: 10px;
+      height: 10px;
+      min-width: 10px;
+      border-radius: 50%;
+      margin-top: 6px;
+    }
+
+    .value-dot.blue {
+      background: var(--blue-lt);
+    }
+
+    .value-dot.teal {
+      background: var(--teal);
+    }
+
+    .value-dot.emerald {
+      background: var(--emerald);
+    }
+
+    .value-dot.amber {
+      background: var(--amber);
+    }
+
+    .value-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .value-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 40px 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-copy {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .footer-tagline {
+      font-size: 13px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .footer-tagline span {
+      color: var(--blue-lt);
+      font-weight: 600;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--white);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .hero-visual {
+        display: none;
+      }
+
+      .method-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .case-two-col {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      .case-header {
+        flex-direction: column;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .cta-box {
+        padding: 40px 24px;
+      }
+
+      .cta-form-wrap {
+        grid-template-columns: 1fr;
+      }
+
+      .screenshots-row {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .pain-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* smooth section reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#hero" class="logo">
+        <div class="logo-mark"></div>
+        <span class="logo-text">Vértice<span> Data</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#pain">El problema</a></li>
+        <li><a href="#method">Metodología</a></li>
+        <li><a href="#cases">Casos reales</a></li>
+        <li><a href="#about">Sobre nosotros</a></li>
+      </ul>
+      <a href="#cta" class="btn-nav">Sesión gratuita →</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-inner">
+      <div>
+        <div class="hero-tag">
+          <span class="tag">Consultoría de datos para distribución FMCG</span>
+        </div>
+        <h1 class="hero-h1">
+          Tus datos ya existen.<br />
+          <span class="highlight">Aprende a usarlos.</span>
+        </h1>
+        <p class="hero-sub">
+          Las distribuidoras pierden margen cada día por catálogos caóticos, procesos manuales y sistemas que no se
+          comunican. Nosotros conectamos tus operaciones comerciales de punta a punta.
+        </p>
+        <div class="hero-ctas">
+          <a href="#cta" class="btn-primary">Reserva tu sesión gratuita</a>
+          <a href="#cases" class="btn-secondary">Ver casos reales</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="metric-row">
+          <div class="metric">
+            <div class="metric-value blue">+6</div>
+            <div class="metric-label">Canales automatizados<br />desde una fuente de verdad</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value teal">10k</div>
+            <div class="metric-label">Referencias gestionadas<br />sin trabajo manual</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value emerald">0→1</div>
+            <div class="metric-label">Visibilidad de atención al cliente<br />por primera vez</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value amber">Días→Horas</div>
+            <div class="metric-label">Tiempo para activar<br />un producto nuevo</div>
+          </div>
+        </div>
+        <div class="hero-statement">
+          <strong>Metodología probada:</strong> Describimos tu negocio tal como funciona hoy. Diagnosticamos dónde
+          pierdes tiempo y margen. Prescribimos un plan de acción concreto que puedes ejecutar.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAIN -->
+  <section id="pain">
+    <div class="container reveal">
+      <div class="section-header">
+        <span class="tag">¿Te suena alguna de estas situaciones?</span>
+        <h2 class="section-h2" style="margin-top:16px;">Estos problemas no son tecnológicos.<br />Son de negocio. Y
+          tienen solución.</h2>
+        <p class="section-sub">Los reconocemos porque los hemos vivido desde dentro, en distribución de gran consumo.
+        </p>
+      </div>
+      <div class="pain-grid">
+        <div class="pain-card">
+          <div class="pain-icon red">📦</div>
+          <p class="pain-title"><em>"Nuestro catálogo es un caos."</em></p>
+          <p class="pain-desc">Cada departamento tiene su propia versión. Cuando hay que actualizar un marketplace o la
+            web, alguien tiene que montar todo a mano. Otra vez.</p>
+        </div>
+        <div class="pain-card">
+          <div class="pain-icon orange">⏱️</div>
+          <p class="pain-title"><em>"Tardamos días en cosas automáticas."</em></p>
+          <p class="pain-desc">Generar un informe de ventas. Actualizar precios en tres sitios. Enviar fichas de
+            producto a cada canal. Horas que se repiten cada semana sin añadir valor.</p>
+        </div>
+        <div class="pain-card">
+          <div class="pain-icon yellow">🔌</div>
+          <p class="pain-title"><em>"Nuestros sistemas no se hablan."</em></p>
+          <p class="pain-desc">SAP por un lado, el Excel de marketing por otro, la web por otro. Nadie tiene la foto
+            completa. Las decisiones se toman con datos que ya están obsoletos.</p>
+        </div>
+        <div class="pain-card">
+          <div class="pain-icon purple">📊</div>
+          <p class="pain-title"><em>"No sé qué productos me dan dinero."</em></p>
+          <p class="pain-desc">Las decisiones se toman por intuición o por el informe que alguien montó hace tres meses.
+            Sin visibilidad real del negocio, el margen se pierde a ciegas.</p>
+        </div>
+        <div class="pain-card">
+          <div class="pain-icon pink">📬</div>
+          <p class="pain-title"><em>"La atención al cliente es un caos."</em></p>
+          <p class="pain-desc">No sabemos cuántas consultas llegan, cuántas quedan sin responder ni qué problemas se
+            repiten. Todo por email, sin registro ni datos.</p>
+        </div>
+      </div>
+      <p class="pain-footer" style="margin-top:48px;">Estos problemas existen en casi todas las distribuidoras. <span>La
+          diferencia está en quién decide resolverlos.</span></p>
+    </div>
+  </section>
+
+  <!-- METHOD -->
+  <section id="method">
+    <div class="container reveal">
+      <div class="section-header">
+        <span class="tag">Metodología</span>
+        <h2 class="section-h2" style="margin-top:16px;">Conectamos tus operaciones comerciales<br />de punta a punta.
+        </h2>
+        <p class="section-sub">No somos una consultora que llega, audita y se va. Trabajamos con una metodología clara
+          en tres fases.</p>
+      </div>
+      <div class="method-grid">
+        <div class="method-steps">
+          <div class="step">
+            <div>
+              <div class="step-num s1">1</div>
+            </div>
+            <div>
+              <p class="step-label s1">Describir</p>
+              <p class="step-title">Nos sentamos contigo</p>
+              <p class="step-desc">Hablamos con las personas que tocan los datos cada día. Juntos dibujamos cómo
+                funciona tu negocio realmente — no cómo debería funcionar, sino cómo funciona hoy.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div>
+              <div class="step-num s2">2</div>
+            </div>
+            <div>
+              <p class="step-label s2">Diagnosticar</p>
+              <p class="step-title">Ponemos números al problema</p>
+              <p class="step-desc">Con el mapa sobre la mesa, identificamos dónde pierdes más tiempo y dinero. No
+                priorizamos por lo que suena bien, sino por impacto real. ¿Cuántas horas se pierden? ¿Qué decisiones se
+                toman a ciegas?</p>
+            </div>
+          </div>
+          <div class="step">
+            <div>
+              <div class="step-num s3">3</div>
+            </div>
+            <div>
+              <p class="step-label s3">Prescribir</p>
+              <p class="step-title">Te decimos exactamente qué hacer</p>
+              <p class="step-desc">Entregamos un plan de acción concreto: qué resolver primero, con qué herramienta, en
+                cuánto tiempo y a qué coste. Sin humo. Y si quieres, lo implementamos nosotros.</p>
+            </div>
+          </div>
+        </div>
+        <div class="services-panel">
+          <div class="services-header">
+            <span>Lo que te pasa</span>
+            <span>Lo que hacemos</span>
+          </div>
+          <div class="service-row">
+            <span class="service-problem">Tu catálogo no tiene fuente de verdad</span>
+            <span class="service-solution">Centralizamos tus datos de producto en un sistema único</span>
+          </div>
+          <div class="service-row">
+            <span class="service-problem">Procesos manuales que se repiten cada semana</span>
+            <span class="service-solution">Los automatizamos para que no dependan de personas</span>
+          </div>
+          <div class="service-row">
+            <span class="service-problem">Tus sistemas no se hablan entre sí</span>
+            <span class="service-solution">Los conectamos: ERP, web, marketplaces, todo sincronizado</span>
+          </div>
+          <div class="service-row">
+            <span class="service-problem">No tienes visibilidad real del negocio</span>
+            <span class="service-solution">Montamos cuadros de mando con datos que ya tienes</span>
+          </div>
+          <div class="service-row">
+            <span class="service-problem">La atención al cliente es un agujero negro</span>
+            <span class="service-solution">Implementamos un sistema donde todo queda registrado</span>
+          </div>
+          <div class="service-row">
+            <span class="service-problem">Actualizar el catálogo impreso tarda semanas</span>
+            <span class="service-solution">Lo generamos automáticamente desde los mismos datos</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CASES -->
+  <section id="cases">
+    <div class="container reveal">
+      <div class="section-header">
+        <span class="tag">Casos reales</span>
+        <h2 class="section-h2" style="margin-top:16px;">Ya lo hemos hecho.<br />Con datos reales, en distribución real.
+        </h2>
+        <p class="section-sub">Estos no son ejemplos hipotéticos. Son proyectos implementados en una distribuidora de
+          gran consumo.</p>
+      </div>
+
+      <!-- Caso PIM -->
+      <div class="cases-grid">
+        <div class="case-card">
+          <div class="case-header">
+            <div>
+              <span class="case-tag pim">Caso 1 — Gestión de producto</span>
+              <h3 class="case-title">Distribuidora FMCG · 10.000 referencias</h3>
+              <p class="case-sub">Una empresa sin fuente de verdad para su catálogo. Su mejor catálogo no lo tenía la
+                empresa — lo tenía Amazon.</p>
+            </div>
+            <div class="case-badge">SAP · PIM · ETL<br />6 canales</div>
+          </div>
+          <div class="case-body">
+            <div class="case-two-col">
+              <div>
+                <p class="case-block-label">Situación inicial</p>
+                <div class="case-text">
+                  <p>Cada departamento manejaba su propia versión de los datos de producto. Montar información para
+                    cualquier canal nuevo costaba horas de trabajo manual.</p>
+                  <p>Los errores eran tantos como personas tocando datos. No había una sola fuente de verdad.</p>
+                </div>
+                <div class="diagram-box" style="margin-top:20px;">
+                  <p class="diagram-label">Arquitectura implementada</p>
+                  <div class="mermaid">
+                    flowchart LR
+                    SAP["SAP\n(ERP)"]
+                    ETL["ETL\nReglas\nnegocio"]
+                    PIM["Sales Layer\n(PIM)"]
+                    SAP -->|FTP auto| ETL
+                    ETL -->|Datos limpios| PIM
+                    PIM --> SHOP["Shopify"]
+                    PIM --> MKT["Marketplaces"]
+                    PIM --> CAT["Catálogo físico"]
+                    PIM --> PKG["Packaging"]
+                    PIM --> BI["Analítica"]
+                    PIM --> BP["Brand Portal"]
+                    style SAP fill:#2563eb,color:#fff,stroke:none
+                    style PIM fill:#10b981,color:#fff,stroke:none
+                    style ETL fill:#f59e0b,color:#fff,stroke:none
+                  </div>
+                </div>
+              </div>
+              <div>
+                <p class="case-block-label">Tiempo recuperado</p>
+                <ul class="impact-list">
+                  <li class="impact-item">
+                    <span class="impact-icon">→</span>
+                    Un producto nuevo disponible en <strong>todos los canales el mismo día</strong> que se da de alta.
+                    Antes: semanas.
+                  </li>
+                  <li class="impact-item">
+                    <span class="impact-icon">→</span>
+                    El equipo <strong>dejó de dedicar horas semanales</strong> a copiar datos entre sistemas. Lo que se
+                    actualiza en un sitio, se actualiza en todos.
+                  </li>
+                  <li class="impact-item">
+                    <span class="impact-icon">→</span>
+                    De <strong>cada departamento con su Excel</strong> a una única fuente de verdad. Se acabaron las
+                    versiones contradictorias.
+                  </li>
+                  <li class="impact-item">
+                    <span class="impact-icon">→</span>
+                    <strong>6 canales funcionando en automático</strong> donde antes había 0. Cada canal nuevo que se
+                    añada ya no requiere trabajo manual.
+                  </li>
+                </ul>
+                <div class="screenshots-row" style="margin-top:20px;">
+                  <img src="img/pim-familias.png"
+                    alt="Vista de productos organizados por familias en el PIM" class="screenshot" />
+                  <img src="img/pim-conectores.png"
+                    alt="Conectores activos — 6 canales de distribución automatizada" class="screenshot" />
+                  <img src="img/pim-multimedia.png" alt="Gestión multimedia desde el PIM"
+                    class="screenshot" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Caso Freshdesk -->
+        <div class="case-card">
+          <div class="case-header">
+            <div>
+              <span class="case-tag freshdesk">Caso 2 — Atención al cliente</span>
+              <h3 class="case-title">Atención al cliente sin datos</h3>
+              <p class="case-sub">Un equipo que se movía por percepciones, sin datos sobre volumen, tiempos ni problemas
+                recurrentes.</p>
+            </div>
+            <div class="case-badge">Freshdesk<br />Ticketing · SLA</div>
+          </div>
+          <div class="case-body">
+            <div class="case-two-col">
+              <div>
+                <p class="case-block-label">Situación inicial</p>
+                <div class="case-text">
+                  <p>No había datos sobre cuántas consultas llegaban, cuántas quedaban sin responder ni qué problemas se
+                    repetían. La gestión era reactiva e invisible.</p>
+                  <p>Imposible detectar patrones ni mejorar nada sin tener la foto real del estado del servicio.</p>
+                </div>
+                <p class="case-block-label" style="margin-top:20px;">Qué hicimos</p>
+                <div class="case-text">
+                  <p>Implementamos un sistema de ticketing profesional. Creamos tipificaciones, plantillas de respuesta
+                    y una política de SLA para medir tiempos de respuesta.</p>
+                </div>
+              </div>
+              <div>
+                <p class="case-block-label">Tiempo recuperado</p>
+                <ul class="impact-list" style="margin-bottom:20px;">
+                  <li class="impact-item">
+                    <span class="impact-icon">→</span>
+                    De responder por percepciones a <strong>tener datos reales</strong> de volumen, tipo y estado de
+                    cada consulta.
+                  </li>
+                  <li class="impact-item">
+                    <span class="impact-icon">→</span>
+                    Tiempos de respuesta <strong>medidos y controlados</strong> por primera vez.
+                  </li>
+                  <li class="impact-item">
+                    <span class="impact-icon">→</span>
+                    Problemas recurrentes <strong>detectados con datos</strong>, no con intuición — lo que permite
+                    solucionarlos de raíz.
+                  </li>
+                </ul>
+                <img src="img/freshdesk-portal.png"
+                  alt="Portal de conocimiento profesional Freshdesk" class="screenshot-single" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="cta">
+    <div class="container reveal">
+      <div class="cta-box">
+        <div class="cta-glow"></div>
+        <span class="tag" style="margin-bottom:20px; display:inline-flex;">30 minutos para saber si te podemos
+          ayudar</span>
+        <h2 class="cta-h2">Sesión de Descubrimiento.<br />Gratuita. Sin compromiso.</h2>
+        <p class="cta-sub">Nos cuentas cómo funcionan tus operaciones hoy. Identificamos juntos dónde se pierde más
+          tiempo. Te decimos con honestidad si hay algo que podamos mejorar — y si no, también.</p>
+        <ul class="cta-checklist">
+          <li>30 minutos por videollamada</li>
+          <li>Sin compromiso posterior</li>
+          <li>Te decimos siempre la verdad</li>
+          <li>Si hay encaje, siguiente paso: Diagnóstico</li>
+        </ul>
+
+        <div class="cta-form-wrap">
+          <div class="form-group">
+            <label class="form-label" for="nombre">Nombre</label>
+            <input id="nombre" type="text" class="form-input" placeholder="Alejandro García" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="email">Email</label>
+            <input id="email" type="email" class="form-input" placeholder="alejandro@empresa.es" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="empresa">Empresa</label>
+            <input id="empresa" type="text" class="form-input" placeholder="Distribuciones García S.L." />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="cargo">Cargo</label>
+            <input id="cargo" type="text" class="form-input" placeholder="Director General" />
+          </div>
+          <button type="button" class="btn-submit" onclick="handleSubmit()">
+            Reservar sesión gratuita →
+          </button>
+          <p class="form-note">Sin spam. Sin compromiso. Solo una conversación honesta sobre tu negocio.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="container reveal">
+      <div class="about-grid">
+        <div>
+          <span class="tag" style="margin-bottom:16px; display:inline-flex;">Sobre nosotros</span>
+          <h2 class="about-h2">Especialistas en operaciones comerciales para distribución.</h2>
+          <p class="about-sub">No somos una consultora genérica que llega con un PowerPoint. Trabajamos en distribución
+            de gran consumo. Hemos vivido los mismos problemas que tú: catálogos imposibles, datos dispersos, procesos
+            que nadie cuestiona.</p>
+          <div class="about-pills">
+            <span class="pill">Python · Pandas · SQL</span>
+            <span class="pill">Power BI · Oracle BI</span>
+            <span class="pill">SAP · ERP</span>
+            <span class="pill">Sales Layer · PIM</span>
+            <span class="pill">n8n · Automatización</span>
+            <span class="pill">Freshdesk</span>
+            <span class="pill">Shopify · Marketplaces</span>
+          </div>
+        </div>
+        <div class="value-list">
+          <div class="value-item">
+            <div class="value-dot blue"></div>
+            <div>
+              <p class="value-title">Conocemos tu sector desde dentro</p>
+              <p class="value-desc">Distribución FMCG, no teoría. Sabemos lo que es gestionar 10.000 referencias, 6
+                canales y un ERP que nadie quiere tocar.</p>
+            </div>
+          </div>
+          <div class="value-item">
+            <div class="value-dot teal"></div>
+            <div>
+              <p class="value-title">Hablamos de negocio, no solo de tecnología</p>
+              <p class="value-desc">Entendemos el margen, el time-to-market y las decisiones que tomas cada día. La
+                tecnología es solo el medio.</p>
+            </div>
+          </div>
+          <div class="value-item">
+            <div class="value-dot emerald"></div>
+            <div>
+              <p class="value-title">Implementamos, no solo diagnosticamos</p>
+              <p class="value-desc">Nuestro trabajo no acaba en un informe. Si hay que conectar sistemas, automatizar
+                procesos o montar un cuadro de mando, lo hacemos.</p>
+            </div>
+          </div>
+          <div class="value-item">
+            <div class="value-dot amber"></div>
+            <div>
+              <p class="value-title">Ya lo hemos hecho</p>
+              <p class="value-desc">Los casos de esta página son reales. Con datos reales, en una distribuidora real. No
+                vendemos promesas.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-copy">© 2026 Vértice Data. Todos los derechos reservados.</div>
+      <div class="footer-tagline">
+        <span>Operaciones</span> · <span>Tecnología</span> · <span>Negocio</span>
+      </div>
+      <div class="footer-links">
+        <a href="#cta">Contacto</a>
+        <a href="mailto:alejandro@verticedata.es">alejandro@verticedata.es</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mermaid init
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'dark',
+      themeVariables: {
+        primaryColor: '#2563eb',
+        primaryTextColor: '#f8fafc',
+        primaryBorderColor: '#3b82f6',
+        lineColor: '#4b5563',
+        secondaryColor: '#111f45',
+        tertiaryColor: '#0d1b3e',
+        background: '#08112b',
+        mainBkg: '#111f45',
+        nodeBorder: '#3b82f6',
+        fontSize: '13px',
+      },
+      flowchart: { curve: 'basis', padding: 16 }
+    });
+
+    // Scroll reveal
+    const observer = new IntersectionObserver(
+      (entries) => entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+      }),
+      { threshold: 0.12 }
+    );
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Form submit
+    function handleSubmit() {
+      const nombre = document.getElementById('nombre').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const empresa = document.getElementById('empresa').value.trim();
+      const cargo = document.getElementById('cargo').value.trim();
+
+      if (!nombre || !email || !empresa) {
+        alert('Por favor rellena al menos tu nombre, email y empresa.');
+        return;
+      }
+      // Replace with Tally form action or custom endpoint
+      alert(`¡Gracias, ${nombre}! Te contactaremos en las próximas 24 horas para confirmar tu sesión.`);
+    }
+  </script>
+</body>
+
+</html>
