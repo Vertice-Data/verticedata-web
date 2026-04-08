@@ -1182,6 +1182,14 @@
 
 <body>
 
+  <!-- Hidden form for Netlify detection at deploy time -->
+  <form name="contacto" netlify netlify-honeypot="bot-field" hidden>
+    <input name="nombre" />
+    <input name="email" />
+    <input name="empresa" />
+    <input name="cargo" />
+  </form>
+
   <!-- NAV -->
   <nav>
     <div class="nav-inner">
