@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Vértice Data — Operaciones · Tecnología · Negocio</title>
   <meta name="description"
-    content="Digitalizarse no es comprar IA. Nos metemos en tus operaciones, encontramos qué mejorar y lo implementamos contigo. Consultoría de operaciones para distribución y marcas." />
+    content="Consultoría de datos para distribuidoras. Ayudamos a distribuidoras a dejar de perder margen por no usar sus propios datos. Catálogos, automatización, reporting e integraciones." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
@@ -1126,6 +1126,57 @@
       opacity: 1;
       transform: none;
     }
+
+    /* ── PARTNERS ── */
+    #partners {
+      padding: 60px 24px;
+      background: var(--navy);
+      border-top: 1px solid var(--border);
+    }
+
+    .partners-label {
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+
+    .partners-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+
+    .partner-logo {
+      height: 32px;
+      opacity: 0.45;
+      filter: grayscale(100%) brightness(2);
+      transition: opacity .3s, filter .3s;
+    }
+
+    .partner-logo:hover {
+      opacity: 0.85;
+      filter: grayscale(0%) brightness(1);
+    }
+
+    /* placeholder text when no logos yet */
+    .partner-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--muted);
+      opacity: 0.5;
+      letter-spacing: .02em;
+      transition: opacity .3s;
+    }
+
+    .partner-name:hover {
+      opacity: 0.8;
+    }
   </style>
 </head>
 
@@ -1154,15 +1205,15 @@
     <div class="hero-inner">
       <div>
         <div class="hero-tag">
-          <span class="tag">Digitalizarse no es comprar IA</span>
+          <span class="tag">Consultoría de datos para distribución</span>
         </div>
         <h1 class="hero-h1">
           Los resultados los crean<br />
           <span class="highlight">los procesos y las personas.</span>
         </h1>
         <p class="hero-sub">
-          Nos metemos en tus operaciones, encontramos qué mejorar y lo implementamos contigo.
-          No vendemos software. Elegimos la mejor solución para tu caso — o la construimos.
+          Ayudamos a distribuidoras a dejar de perder margen por no usar sus propios datos.
+          Conectamos tus operaciones comerciales de punta a punta.
         </p>
         <div class="hero-ctas">
           <a href="#cta" class="btn-primary">Reserva tu sesión gratuita</a>
@@ -1509,8 +1560,8 @@
         <div>
           <span class="tag" style="margin-bottom:16px; display:inline-flex;">Quién está detrás</span>
           <h2 class="about-h2">Conocemos tu sector porque venimos de dentro.</h2>
-          <p class="about-sub">Vértice Data nace de la experiencia real en dirección de una distribuidora de gran consumo. Hemos implementado todo lo que ves en esta página — el PIM, las automatizaciones, el ticketing, las integraciones con SAP — en una empresa real, con datos reales.</p>
-          <p class="about-sub" style="margin-top:12px; margin-bottom:32px;"><strong style="color: var(--white);">Alejandro Campos</strong> · Fundador. Desde dirección en distribución de gran consumo.</p>
+          <p class="about-sub">Vértice Data nace de la experiencia real en distribución de producto de consumo. Hemos implementado todo lo que ves en esta página — gestión de catálogo, automatizaciones, ticketing, integraciones con SAP — en empresas reales, con datos reales y equipos reales.</p>
+          <p class="about-sub" style="margin-top:12px; margin-bottom:32px;"><strong style="color: var(--white);">Alejandro Campos</strong> · Fundador. Consultor de datos con experiencia directa en operaciones de distribución de gran consumo.</p>
           <div class="about-pills">
             <span class="pill">Distribución y marcas</span>
             <span class="pill">Catálogos digitales</span>
@@ -1553,6 +1604,19 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTNERS -->
+  <section id="partners" class="reveal">
+    <div class="container">
+      <p class="partners-label">Trabajamos con</p>
+      <div class="partners-row">
+        <!-- Reemplazar con <img class="partner-logo" src="img/logo-saleslayer.svg" alt="Sales Layer" /> cuando estén los logos -->
+        <span class="partner-name">Sales Layer</span>
+        <span class="partner-name">Freshworks</span>
+        <span class="partner-name">SAP</span>
       </div>
     </div>
   </section>
