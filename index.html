@@ -261,81 +261,6 @@
       background: rgba(255, 255, 255, 0.05);
     }
 
-    /* hero visual */
-    .hero-visual {
-      background: var(--navy-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 32px;
-      position: relative;
-    }
-
-    .hero-visual::before {
-      content: '';
-      position: absolute;
-      inset: -1px;
-      border-radius: var(--radius-lg);
-      background: linear-gradient(135deg, rgba(37, 99, 235, 0.4), rgba(14, 165, 233, 0.1), transparent);
-      z-index: -1;
-    }
-
-    .metric-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-bottom: 16px;
-    }
-
-    .metric {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px;
-    }
-
-    .metric-value {
-      font-size: 28px;
-      font-weight: 800;
-      letter-spacing: -.02em;
-      margin-bottom: 4px;
-    }
-
-    .metric-label {
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.4;
-    }
-
-    .metric-value.blue {
-      color: var(--blue-lt);
-    }
-
-    .metric-value.teal {
-      color: var(--teal);
-    }
-
-    .metric-value.emerald {
-      color: var(--emerald);
-    }
-
-    .metric-value.amber {
-      color: var(--amber);
-    }
-
-    .hero-statement {
-      background: rgba(16, 185, 129, 0.1);
-      border: 1px solid rgba(16, 185, 129, 0.25);
-      border-radius: var(--radius);
-      padding: 16px 20px;
-      font-size: 13px;
-      color: rgba(16, 185, 129, 0.9);
-      line-height: 1.5;
-    }
-
-    .hero-statement strong {
-      color: var(--emerald);
-    }
-
     /* ── PAIN ── */
     #pain {
       padding: 100px 24px;
@@ -539,54 +464,6 @@
       line-height: 1.65;
     }
 
-    .services-panel {
-      background: var(--navy-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-    }
-
-    .services-header {
-      padding: 20px 24px;
-      border-bottom: 1px solid var(--border);
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--muted);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .service-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      padding: 14px 24px;
-      border-bottom: 1px solid var(--border);
-      font-size: 13px;
-      align-items: start;
-      transition: background .15s;
-    }
-
-    .service-row:last-child {
-      border-bottom: none;
-    }
-
-    .service-row:hover {
-      background: rgba(255, 255, 255, 0.03);
-    }
-
-    .service-problem {
-      color: var(--muted);
-      line-height: 1.45;
-    }
-
-    .service-solution {
-      color: var(--white);
-      font-weight: 500;
-      line-height: 1.45;
-    }
-
     /* ── CASES ── */
     #cases {
       padding: 100px 24px;
@@ -745,45 +622,6 @@
     /* mermaid diagram forced dark */
     .mermaid {
       text-align: center;
-    }
-
-    .screenshots-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 24px;
-    }
-
-    .screenshot {
-      border-radius: var(--radius);
-      overflow: hidden;
-      border: 1px solid var(--border);
-      background: #000;
-      aspect-ratio: 16/10;
-      object-fit: cover;
-      width: 100%;
-      transition: transform .2s, border-color .2s;
-    }
-
-    .screenshot:hover {
-      transform: scale(1.02);
-      border-color: rgba(37, 99, 235, 0.4);
-    }
-
-    .screenshot-single {
-      border-radius: var(--radius);
-      overflow: hidden;
-      border: 1px solid var(--border);
-      background: #000;
-      max-height: 260px;
-      object-fit: cover;
-      width: 100%;
-      transition: transform .2s, border-color .2s;
-    }
-
-    .screenshot-single:hover {
-      transform: scale(1.01);
-      border-color: rgba(16, 185, 129, 0.4);
     }
 
     /* ── CTA ── */
@@ -1071,10 +909,6 @@
         gap: 40px;
       }
 
-      .hero-visual {
-        display: none;
-      }
-
       .method-grid {
         grid-template-columns: 1fr;
         gap: 40px;
@@ -1099,10 +933,6 @@
       }
 
       .cta-form-wrap {
-        grid-template-columns: 1fr;
-      }
-
-      .screenshots-row {
         grid-template-columns: 1fr;
       }
 
@@ -1254,16 +1084,6 @@
           <p class="pain-title">Tus sistemas no se hablan entre sí</p>
           <p class="pain-desc">ERP por un lado, web por otro, marketplaces por otro. Lo que cambia en uno no llega a los demás. Errores constantes.</p>
         </div>
-        <div class="pain-card">
-          <div class="pain-icon purple">📊</div>
-          <p class="pain-title">Tomas decisiones a ciegas</p>
-          <p class="pain-desc">No sabes qué productos son rentables, qué clientes te cuestan dinero, ni dónde pierdes margen. El último informe fiable tiene tres meses.</p>
-        </div>
-        <div class="pain-card">
-          <div class="pain-icon pink">📬</div>
-          <p class="pain-title">Atención al cliente sin datos</p>
-          <p class="pain-desc">No sabes cuántas consultas llegan, cuáles quedan sin responder, ni qué problemas se repiten. Gestionas por percepción, no por datos.</p>
-        </div>
       </div>
     </div>
   </section>
@@ -1277,7 +1097,7 @@
         </h2>
         <p class="section-sub">No somos una consultora que llega con un PowerPoint y se va. Somos tu partner de implementación.</p>
       </div>
-      <div class="method-grid">
+      <div class="method-grid" style="grid-template-columns:1fr; max-width:640px; margin:0 auto;">
         <div class="method-steps">
           <div class="step">
             <div>
@@ -1311,36 +1131,6 @@
               <p class="step-title">Lo montamos contigo</p>
               <p class="step-desc">Entregamos un plan de acción concreto y, si quieres, lo implementamos nosotros. La herramienta depende de tu caso — puede ser un software, una automatización, una integración, o una combinación.</p>
             </div>
-          </div>
-        </div>
-        <div class="services-panel">
-          <div class="services-header">
-            <span>Tu situación</span>
-            <span>Lo que consigues</span>
-          </div>
-          <div class="service-row">
-            <span class="service-problem">Cada departamento tiene su versión del catálogo</span>
-            <span class="service-solution">Una fuente de verdad que se distribuye sola a todos los canales</span>
-          </div>
-          <div class="service-row">
-            <span class="service-problem">Tareas manuales que se repiten cada semana</span>
-            <span class="service-solution">Automatizadas. Tu equipo se dedica a lo que importa</span>
-          </div>
-          <div class="service-row">
-            <span class="service-problem">Sistemas que no se hablan entre sí</span>
-            <span class="service-solution">Conectados: lo que entra en uno, llega a los demás</span>
-          </div>
-          <div class="service-row">
-            <span class="service-problem">Decisiones basadas en intuición</span>
-            <span class="service-solution">Cuadros de mando con datos reales y actualizados</span>
-          </div>
-          <div class="service-row">
-            <span class="service-problem">Atención al cliente sin datos</span>
-            <span class="service-solution">Todo registrado, medido y con patrones detectados</span>
-          </div>
-          <div class="service-row">
-            <span class="service-problem">Quieres implementar un software y no sabes cómo</span>
-            <span class="service-solution">Te ayudamos a elegirlo, configurarlo y ponerlo en marcha</span>
           </div>
         </div>
       </div>
@@ -1419,7 +1209,23 @@
                 </li>
               </ul>
             </div>
-            <div style="margin-top:16px; font-size:12px; color:var(--muted);">Ticketing · SLA · Reporting</div>
+            <div class="diagram-box" style="margin-top:20px;">
+              <p class="diagram-label">Proceso implementado</p>
+              <div class="mermaid">
+                flowchart LR
+                IN["Emails\nsueltos"]
+                TK["Ticketing\n(categorizado)"]
+                SLA["SLA\n(tiempos)"]
+                DATA["Datos\n(patrones)"]
+                IN -->|Registro| TK
+                TK -->|Control| SLA
+                SLA -->|Análisis| DATA
+                style IN fill:#ef4444,color:#fff,stroke:none
+                style TK fill:#2563eb,color:#fff,stroke:none
+                style SLA fill:#f59e0b,color:#fff,stroke:none
+                style DATA fill:#10b981,color:#fff,stroke:none
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1465,6 +1271,19 @@
           </button>
           <p class="form-note">Sin spam. Solo una conversación honesta sobre tu negocio.</p>
         </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTNERS -->
+  <section id="partners" class="reveal">
+    <div class="container">
+      <p class="partners-label">Trabajamos con</p>
+      <div class="partners-row">
+        <!-- Reemplazar con <img class="partner-logo" src="img/logo-saleslayer.svg" alt="Sales Layer" /> cuando estén los logos -->
+        <span class="partner-name">Sales Layer</span>
+        <span class="partner-name">Freshworks</span>
+        <span class="partner-name">SAP</span>
       </div>
     </div>
   </section>
@@ -1520,19 +1339,6 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PARTNERS -->
-  <section id="partners" class="reveal">
-    <div class="container">
-      <p class="partners-label">Trabajamos con</p>
-      <div class="partners-row">
-        <!-- Reemplazar con <img class="partner-logo" src="img/logo-saleslayer.svg" alt="Sales Layer" /> cuando estén los logos -->
-        <span class="partner-name">Sales Layer</span>
-        <span class="partner-name">Freshworks</span>
-        <span class="partner-name">SAP</span>
       </div>
     </div>
   </section>
