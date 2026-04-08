@@ -7,6 +7,7 @@
   <title>Vértice Data — Operaciones · Tecnología · Negocio</title>
   <meta name="description"
     content="Consultoría de datos para distribuidoras de producto de consumo. Conectamos tus operaciones comerciales de punta a punta. Catálogos, automatización, reporting e integraciones." />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
@@ -1368,7 +1369,26 @@
                 </li>
               </ul>
             </div>
-            <div style="margin-top:16px; font-size:12px; color:var(--muted);">SAP · PIM · ETL · 6 conectores</div>
+            <div class="diagram-box" style="margin-top:20px;">
+              <p class="diagram-label">Arquitectura implementada</p>
+              <div class="mermaid">
+                flowchart LR
+                SAP["SAP\n(ERP)"]
+                ETL["ETL\nReglas\nnegocio"]
+                PIM["PIM\n(Catálogo)"]
+                SAP -->|FTP auto| ETL
+                ETL -->|Datos limpios| PIM
+                PIM --> SHOP["Shopify"]
+                PIM --> MKT["Marketplaces"]
+                PIM --> CAT["Catálogo físico"]
+                PIM --> PKG["Packaging"]
+                PIM --> BI["Analítica"]
+                PIM --> BP["Brand Portal"]
+                style SAP fill:#2563eb,color:#fff,stroke:none
+                style PIM fill:#10b981,color:#fff,stroke:none
+                style ETL fill:#f59e0b,color:#fff,stroke:none
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1524,6 +1544,25 @@
   </footer>
 
   <script>
+    // Mermaid init
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'dark',
+      themeVariables: {
+        primaryColor: '#2563eb',
+        primaryTextColor: '#f8fafc',
+        primaryBorderColor: '#3b82f6',
+        lineColor: '#4b5563',
+        secondaryColor: '#111f45',
+        tertiaryColor: '#0d1b3e',
+        background: '#08112b',
+        mainBkg: '#111f45',
+        nodeBorder: '#3b82f6',
+        fontSize: '13px',
+      },
+      flowchart: { curve: 'basis', padding: 16 }
+    });
+
     // Scroll reveal
     const observer = new IntersectionObserver(
       (entries) => entries.forEach(e => {
@@ -1533,7 +1572,23 @@
     );
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-    // Form handled by Netlify Forms (data-netlify="true")
+    // Form submit via AJAX (no redirect)
+    const form = document.querySelector('form[name="contacto"]');
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const formData = new FormData(form);
+      fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData).toString()
+      })
+      .then(() => {
+        form.innerHTML = '<p style="text-align:center; font-size:18px; font-weight:600; color:var(--emerald); padding:40px 0;">Recibido. Te contactamos en las próximas 24 horas.</p>';
+      })
+      .catch(() => {
+        form.innerHTML = '<p style="text-align:center; font-size:16px; color:var(--muted); padding:40px 0;">Ha habido un error. Escríbenos directamente a <a href="mailto:alejandro@verticedata.tech" style="color:var(--blue-lt);">alejandro@verticedata.tech</a></p>';
+      });
+    });
   </script>
 </body>
 
