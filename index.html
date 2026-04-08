@@ -1442,7 +1442,7 @@
           <li>Si hay encaje, siguiente paso: Diagnóstico</li>
         </ul>
 
-        <form name="contacto" method="POST" data-netlify="true" class="cta-form-wrap">
+        <form id="contact-form" name="contacto" method="POST" data-netlify="true" class="cta-form-wrap">
           <input type="hidden" name="form-name" value="contacto" />
           <div class="form-group">
             <label class="form-label" for="nombre">Nombre</label>
@@ -1581,7 +1581,7 @@
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
     // Form submit via AJAX (no redirect)
-    const form = document.querySelector('form[name="contacto"]');
+    const form = document.getElementById('contact-form');
     form.addEventListener('submit', function(e) {
       e.preventDefault();
       const formData = new FormData(form);
